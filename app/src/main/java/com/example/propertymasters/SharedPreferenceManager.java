@@ -50,12 +50,16 @@ public class SharedPreferenceManager {
     editor.putInt(KEY_ROLE_ID, user.getRoleId());
     editor.putString(KEY_ROLE_NAME, user.getRoleName());
 
-
     editor.apply();
   }
 
   //this method will checker whether student is already logged in or not
   public boolean isLoggedIn() {
+    SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+    return sharedPreferences.getInt(KEY_USERID, 0) != 0;
+  }
+
+  public boolean isSuperAdmin() {
     SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
     return sharedPreferences.getInt(KEY_USERID, 0) != 0;
   }

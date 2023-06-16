@@ -17,7 +17,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.propertymasters.MainActivity;
 import com.example.propertymasters.R;
 import com.example.propertymasters.SharedPreferenceManager;
 import com.example.propertymasters.URLs;

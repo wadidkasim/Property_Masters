@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
-import com.example.propertymasters.MainActivity;
 import com.example.propertymasters.R;
 
 public class SplashScreenActivity extends AppCompatActivity {

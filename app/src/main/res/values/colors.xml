@@ -13,4 +13,7 @@
     <color name="blue_variant">#CC3378DF</color>
     <color name="text_color">#2B2B2B</color>
 
+    <color name="sold">#92FF0025</color>
+    <color name="available">#8126FF00</color>
+
 </resources>
