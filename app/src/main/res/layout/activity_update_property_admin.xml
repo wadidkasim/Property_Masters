@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginHorizontal="18dp"
-    tools:context=".activities.AddEditSubmissionActivity">
+    tools:context=".activities.UpdatePropertyAdminActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,16 +24,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create submission"
+            android:text="Update property"
             android:textSize="24sp"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical|center_horizontal"/>
     </LinearLayout>
-   <ImageView
-       android:id="@+id/imageView"
-       android:layout_width="match_parent"
-       android:layout_height="240dp"
-       android:src="@drawable/placeholder"/>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:src="@drawable/placeholder"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/propertyTypeTIL"
@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Property Name">
+        android:hint="Name">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

@@ -102,4 +102,13 @@ public class SharedPreferenceManager {
     editor.apply();
   }
 
+  public boolean isAdmin() {
+    SharedPreferences preferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+    if(preferences.getInt(KEY_ROLE_ID, 0)==1){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

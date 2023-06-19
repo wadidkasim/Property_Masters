@@ -31,6 +31,7 @@ public class URLs {
   public static final String URL_CREATE_PROPERTY_SUB = ROOT_URL+PROPERTY_API+"create_submission.php";
 
   public static final String URL_READ_PROPERTY = ROOT_URL+PROPERTY_API+"read.php";
+  public static final String URL_APPROVE_PROPERTY = ROOT_URL+PROPERTY_API+"approve.php";
   public static final String URL_READ_SINGLE_PROPERTY = ROOT_URL+PROPERTY_API+"read_single.php";
   public static final String URL_DELETE_PROPERTY = ROOT_URL+PROPERTY_API+"delete.php";
   public static final String URL_UPDATE_PROPERTY = ROOT_URL+PROPERTY_API+"update.php";
@@ -38,6 +39,7 @@ public class URLs {
 
   public static final String URL_CREATE_INQUIRY = ROOT_URL+INQUIRY_API+"create.php";
   public static final String URL_READ_MINE_INQUIRY = ROOT_URL+INQUIRY_API+"read_mine.php";
+  public static final String URL_READ_INQUIRY = ROOT_URL+INQUIRY_API+"read.php";
   public static final String URL_READ_SINGLE_INQUIRY = ROOT_URL+INQUIRY_API+"read_single.php";
   public static final String URL_DELETE_INQUIRY = ROOT_URL+INQUIRY_API+"delete.php";
   public static final String URL_UPDATE_INQUIRY = ROOT_URL+INQUIRY_API+"update.php";
@@ -46,6 +48,8 @@ public class URLs {
 
   public static final String URL_CREATE_SUBMISSION = ROOT_URL+PROPERTY_SUBMISSION_API+"create.php";
   public static final String URL_READ_MINE_SUBMISSION = ROOT_URL+PROPERTY_SUBMISSION_API+"read_mine.php";
+  public static final String URL_READ_SUBMISSION = ROOT_URL+PROPERTY_SUBMISSION_API+"read.php";
+  public static final String URL_UPDATE_SUBMISSION_REPLY = ROOT_URL+PROPERTY_SUBMISSION_API+"update_reply.php";
   public static final String URL_READ_SINGLE_SUBMISSION = ROOT_URL+PROPERTY_SUBMISSION_API+"read_single.php";
   public static final String URL_DELETE_SUBMISSION = ROOT_URL+PROPERTY_SUBMISSION_API+"delete.php";
   public static final String URL_UPDATE_SUBMISSION = ROOT_URL+PROPERTY_SUBMISSION_API+"update.php";

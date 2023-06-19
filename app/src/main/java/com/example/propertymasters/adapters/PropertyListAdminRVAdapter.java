@@ -18,17 +18,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.propertymasters.R;
 import com.example.propertymasters.activities.PropertyDetailsActivity;
+import com.example.propertymasters.activities.PropertyDetailsAdminActivity;
 import com.example.propertymasters.models.Property;
 
 import java.util.ArrayList;
 
-public class PropertyListRVAdapter extends RecyclerView.Adapter<PropertyListRVAdapter.ViewHolder> {
+public class PropertyListAdminRVAdapter extends RecyclerView.Adapter<PropertyListAdminRVAdapter.ViewHolder> {
 
     ArrayList<Property> propertyArrayList;
     Context context;
     RequestOptions option;
 
-    public PropertyListRVAdapter(ArrayList<Property> propertyArrayList, Context context) {
+    public PropertyListAdminRVAdapter(ArrayList<Property> propertyArrayList, Context context) {
         this.propertyArrayList = propertyArrayList;
         this.context = context;
         option= new RequestOptions().centerCrop().placeholder(R.drawable.placeholder).error(R.drawable.placeholder);
@@ -36,14 +37,14 @@ public class PropertyListRVAdapter extends RecyclerView.Adapter<PropertyListRVAd
 
     @NonNull
     @Override
-    public PropertyListRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PropertyListAdminRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.property_list_item,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PropertyListRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PropertyListAdminRVAdapter.ViewHolder holder, int position) {
         Property property = propertyArrayList.get(position);
         Log.e("property id",String.valueOf(property.getPropertyID()));
         holder.nameTV.setText(property.getName());
@@ -69,11 +70,11 @@ public class PropertyListRVAdapter extends RecyclerView.Adapter<PropertyListRVAd
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PropertyDetailsActivity.class);
+                Intent intent = new Intent(context, PropertyDetailsAdminActivity.class);
 
                 intent.putExtra("id",""+property.getPropertyID());
                 intent.putExtra("name",property.getName());
-                intent.putExtra("price","UGx."+property.getPrice()+"/=");
+                intent.putExtra("price",""+property.getPrice());
                 intent.putExtra("description",property.getDescription());
                 intent.putExtra("location",property.getLocation());
                 intent.putExtra("image",property.getImageURL());

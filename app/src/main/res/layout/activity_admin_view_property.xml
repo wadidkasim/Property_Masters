@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="18dp"
+    tools:context=".activities.AdminViewPropertyActivity">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Properties"
+            android:textSize="24dp"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="normal"/>
+
+
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal">
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipHousing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Housing"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipLand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Land"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <!-- Add more chips as needed -->
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_properties"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+
+
+</LinearLayout>

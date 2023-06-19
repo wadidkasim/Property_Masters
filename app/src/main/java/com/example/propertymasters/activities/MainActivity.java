@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.propertymasters.R;
+import com.example.propertymasters.SharedPreferenceManager;
 import com.example.propertymasters.fragments.FavoritesFragment;
 import com.example.propertymasters.fragments.HomeFragment;
 import com.example.propertymasters.fragments.ProfileFragment;
@@ -23,25 +25,32 @@ public class MainActivity extends AppCompatActivity {
     private int selectedMenuItemId;
     private FrameLayout fragmentContainer;
     private BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView=findViewById(R.id.bottom_navigation);;
+        if (SharedPreferenceManager.getInstance(getApplicationContext()).isAdmin()) {
+            startActivity(new Intent(MainActivity.this, AdminDashboardActivity.class));
+            MainActivity.this.finish();
+        } else {
+
+            bottomNavigationView = findViewById(R.id.bottom_navigation);
+            ;
 
 
-        fragmentContainer = findViewById(R.id.fragment_container);
+            fragmentContainer = findViewById(R.id.fragment_container);
 
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
 
-            selectedMenuItemId = item.getItemId();
-            switch (item.getItemId()) {
-                case R.id.menu_home:
-                    loadFragment(new HomeFragment());
-                    Toast.makeText(MainActivity.this,"home clicked",Toast.LENGTH_SHORT).show();
-                    return true;
+                selectedMenuItemId = item.getItemId();
+                switch (item.getItemId()) {
+                    case R.id.menu_home:
+                        loadFragment(new HomeFragment());
+                        Toast.makeText(MainActivity.this, "home clicked", Toast.LENGTH_SHORT).show();
+                        return true;
 //                case R.id.menu_search:
 //                    loadFragment(new SearchFragment());
 //                    Toast.makeText(MainActivity.this,"search clicked",Toast.LENGTH_SHORT).show();
@@ -50,15 +59,16 @@ public class MainActivity extends AppCompatActivity {
 //                    loadFragment(new FavoritesFragment());
 //                    Toast.makeText(MainActivity.this,"favs clicked",Toast.LENGTH_SHORT).show();
 //                    return true;
-                case R.id.menu_profile:
-                    loadFragment(new ProfileFragment());
-                    Toast.makeText(MainActivity.this,"profile clicked",Toast.LENGTH_SHORT).show();
-                    return true;
-            }
-            return false;
-        });
+                    case R.id.menu_profile:
+                        loadFragment(new ProfileFragment());
+                        Toast.makeText(MainActivity.this, "profile clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+                return false;
+            });
 
-        loadFragment(new HomeFragment());
+            loadFragment(new HomeFragment());
+        }
     }
 
     private void loadFragment(Fragment fragment) {

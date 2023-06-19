@@ -17,17 +17,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.propertymasters.R;
 import com.example.propertymasters.activities.PropertyDetailsActivity;
+import com.example.propertymasters.activities.SubmissionDetailsAdminActivity;
 import com.example.propertymasters.models.PropertySubmission;
 
 import java.util.ArrayList;
 
-public class PropertySubmissionsListRVAdapter extends RecyclerView.Adapter<PropertySubmissionsListRVAdapter.ViewHolder> {
+public class PropertySubmissionsListAdminRVAdapter extends RecyclerView.Adapter<PropertySubmissionsListAdminRVAdapter.ViewHolder> {
 
     ArrayList<PropertySubmission> propertySubmissionArrayList;
     Context context;
     RequestOptions option;
 
-    public PropertySubmissionsListRVAdapter(ArrayList<PropertySubmission> propertySubmissionArrayList, Context context) {
+    public PropertySubmissionsListAdminRVAdapter(ArrayList<PropertySubmission> propertySubmissionArrayList, Context context) {
         this.propertySubmissionArrayList = propertySubmissionArrayList;
         this.context = context;
         option= new RequestOptions().centerCrop().placeholder(R.drawable.placeholder).error(R.drawable.placeholder);
@@ -35,14 +36,14 @@ public class PropertySubmissionsListRVAdapter extends RecyclerView.Adapter<Prope
 
     @NonNull
     @Override
-    public PropertySubmissionsListRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PropertySubmissionsListAdminRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.property_submission_list_item,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PropertySubmissionsListRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PropertySubmissionsListAdminRVAdapter.ViewHolder holder, int position) {
         PropertySubmission propertySubmission = propertySubmissionArrayList.get(position);
         Log.e("property id",String.valueOf(propertySubmission.getPropertyID()));
         holder.nameTV.setText(propertySubmission.getName());
@@ -69,7 +70,7 @@ public class PropertySubmissionsListRVAdapter extends RecyclerView.Adapter<Prope
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PropertyDetailsActivity.class);
+                Intent intent = new Intent(context, SubmissionDetailsAdminActivity.class);
 
                 intent.putExtra("id",""+propertySubmission.getPropertyID());
                 intent.putExtra("submissionId",""+propertySubmission.getSubmissionID());
@@ -79,7 +80,10 @@ public class PropertySubmissionsListRVAdapter extends RecyclerView.Adapter<Prope
                 intent.putExtra("location",propertySubmission.getLocation());
                 intent.putExtra("image",propertySubmission.getImageUrl());
                 intent.putExtra("propertyType",propertySubmission.getPropertyType());
+                intent.putExtra("email",propertySubmission.getEmail());
+                intent.putExtra("phone",propertySubmission.getPhone());
                 intent.putExtra("reply",propertySubmission.getReply());
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }

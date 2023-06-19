@@ -134,7 +134,11 @@ public class LoginActivity extends AppCompatActivity {
 
                                 //starting the profile activity
                                 finish();
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                if(SharedPreferenceManager.getInstance(getApplicationContext()).isAdmin()){
+                                    startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
+                                } else{
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                }
                             } else {
                                 Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_SHORT).show();
                                 Log.e("error message", obj.getString("msg"));

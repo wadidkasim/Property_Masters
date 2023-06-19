@@ -19,14 +19,12 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.propertymasters.AppHelper;
 import com.example.propertymasters.R;
-import com.example.propertymasters.SharedPreferenceManager;
 import com.example.propertymasters.URLs;
 import com.example.propertymasters.VolleyMultipartRequest;
-import com.example.propertymasters.VolleySingleton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
@@ -35,7 +33,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddEditSubmissionActivity extends AppCompatActivity {
+public class UpdatePropertyAdminActivity extends AppCompatActivity {
 
     TextInputLayout nameTIL, descriptionTIL, priceTIL, locationTIL, isApproved;
     ImageView imageView;
@@ -46,22 +44,38 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_edit_submission);
+        setContentView(R.layout.activity_update_property_admin);
 
         backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddEditSubmissionActivity.this.finish();
+                UpdatePropertyAdminActivity.this.finish();
             }
         });
 
+
         autoCompleteTextView = findViewById(R.id.propertyTypeAutoComplete);
+        imageView = findViewById(R.id.imageView);
         nameTIL= findViewById(R.id.nameTIL);
         descriptionTIL =findViewById(R.id.descriptionTIL);
         priceTIL = findViewById(R.id.priceTIL);
         locationTIL = findViewById(R.id.locationTIL);
         submit = findViewById(R.id.submit);
+
+        autoCompleteTextView.setText(getIntent().getStringExtra("propertyType"));
+        nameTIL.getEditText().setText(getIntent().getStringExtra("name"));
+        descriptionTIL.getEditText().setText(getIntent().getStringExtra("description"));
+        priceTIL.getEditText().setText(getIntent().getStringExtra("price"));
+        locationTIL.getEditText().setText(getIntent().getStringExtra("location"));
+
+
+        Glide.with(getApplicationContext())
+                .load(getIntent().getStringExtra("image"))
+                .centerCrop()
+                .placeholder(R.drawable.placeholder)
+                .into(imageView);
+
         // Create an array of values
         String[] propertyTypes = {"Land", "Housing"};
 
@@ -69,7 +83,7 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, propertyTypes);
         autoCompleteTextView.setAdapter(adapter);
 
-        imageView = findViewById(R.id.imageView);
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,10 +97,11 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                createProperty();
+                updateProperty();
             }
         });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -99,18 +114,19 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
         }
     }
 
-    private void createProperty() {
+    private void updateProperty() {
 
         //getting the tag from the edittext
+        final int propertyID = Integer.parseInt(getIntent().getStringExtra("id"));
         final String nameString = nameTIL.getEditText().getText().toString();
         final String descriptionString = descriptionTIL.getEditText().getText().toString();
         final String propertyTypeString = autoCompleteTextView.getText().toString();
         final String locationString = locationTIL.getEditText().getText().toString();
         final int price = Integer.parseInt(priceTIL.getEditText().getText().toString());
-        final int isApproved = 0;
+        final int isApproved = 1;
 
         //our custom volley request
-        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, URLs.URL_CREATE_PROPERTY_SUB,
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, URLs.URL_UPDATE_PROPERTY,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
@@ -120,9 +136,9 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
                             Log.i("tagconvertstr", "["+new String(response.data)+"]");
                             JSONObject obj = new JSONObject(new String(response.data));
 
-                            Toast.makeText(getApplicationContext(), obj.getString("propertyID"), Toast.LENGTH_SHORT).show();
-                            Log.e("Property ID---",obj.getString("propertyID"));
-                            sendSubmission(Integer.parseInt(obj.getString("propertyID")));
+                            Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            Log.e("Message---",obj.getString("message"));
+                            startActivity(new Intent(getApplicationContext(),AdminViewPropertyActivity.class));
 
 
                         } catch (JSONException e) {
@@ -146,6 +162,7 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
+                params.put("propertyID",String.valueOf(propertyID));
                 params.put("propertyType", propertyTypeString);
                 params.put("name", nameString);
                 params.put("description",descriptionString);
@@ -170,74 +187,6 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
 
         //adding the request to volley
         Volley.newRequestQueue(this).add(volleyMultipartRequest);
-        Intent intent = new Intent(AddEditSubmissionActivity.this,MySubmissionsActivity.class);
-        startActivity(intent);
+
     }
-
-    private void sendSubmission(int PropertyID) {
-
-        //if everything is fine
-
-        JSONObject jsonBody = new JSONObject();
-        try {
-            int userId = SharedPreferenceManager.getInstance(getApplicationContext()).getUser().getUserId();
-            // Add your JSON data to the request body
-            jsonBody.put("status", "Under Consideration");
-            jsonBody.put("userId", SharedPreferenceManager.getInstance(getApplicationContext()).getUser().getUserId());
-            jsonBody.put("propertyId", PropertyID);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.URL_CREATE_SUBMISSION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Handle the response from the server
-                        Log.e("respnose",response);
-                        try {
-
-                            //converting response to json object
-                            JSONObject obj = new JSONObject(response);
-                            //if no error in response
-                            if (!obj.getBoolean("error")) {
-                                Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-                                Log.i("success message", obj.getString("message"));
-                                startActivity(new Intent(AddEditSubmissionActivity.this, MySubmissionsActivity.class));
-                            } else {
-                                Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-                                Log.e("error message", obj.getString("message"));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("stack trace error message", e.getMessage());
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle any errors that occur during the request
-                        Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
-                    }
-
-                }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json"; // Set the content type as application/json
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                Log.i("JSON BODY", jsonBody.toString());
-                return jsonBody.toString().getBytes(); // Convert the JSON body to bytes
-            }
-        };
-
-        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-    }
-
-
-
 }

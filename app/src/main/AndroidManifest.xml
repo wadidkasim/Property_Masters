@@ -17,6 +17,30 @@
         android:theme="@style/Theme.PropertyMasters"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SubmissionDetailsAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ViewSubmissionsAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ViewInquiriesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.UpdatePropertyAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.PropertyDetailsAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AdminViewPropertyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AdminAddPropertyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AdminDashboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.AddEditSubmissionActivity"
             android:exported="false" />
         <activity

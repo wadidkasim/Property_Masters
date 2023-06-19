@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,52 +18,38 @@ import com.android.volley.toolbox.Volley;
 import com.example.propertymasters.R;
 import com.example.propertymasters.SharedPreferenceManager;
 import com.example.propertymasters.URLs;
-import com.example.propertymasters.adapters.InquiryListRVAdapter;
+import com.example.propertymasters.adapters.PropertySubmissionsListAdminRVAdapter;
 import com.example.propertymasters.adapters.PropertySubmissionsListRVAdapter;
-import com.example.propertymasters.models.Inquiry;
 import com.example.propertymasters.models.PropertySubmission;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
-public class MySubmissionsActivity extends AppCompatActivity {
+public class ViewSubmissionsAdminActivity extends AppCompatActivity {
 
-    ExtendedFloatingActionButton addSubmissionBtn;
 
     ImageButton backBtn;
     private ArrayList<PropertySubmission> propertySubmissionArrayList;
-    private PropertySubmissionsListRVAdapter propertySubmissionsListRVAdapter;
+    private PropertySubmissionsListAdminRVAdapter propertySubmissionsListRVAdapter;
     private RecyclerView submissionRV;
     JsonObjectRequest jsonObjectRequest;
     RequestQueue requestQueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_submissions);
+        setContentView(R.layout.activity_view_submissions_admin);
 
         backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MySubmissionsActivity.this.finish();
+                ViewSubmissionsAdminActivity.this.finish();
             }
         });
-
-        addSubmissionBtn = findViewById(R.id.add_submission_btn);
-
-        addSubmissionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MySubmissionsActivity.this, AddEditSubmissionActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         propertySubmissionArrayList = new ArrayList<>();
         submissionRV=findViewById(R.id.rv_submissions);
@@ -73,19 +58,13 @@ public class MySubmissionsActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),RecyclerView.VERTICAL,false);
         submissionRV.setLayoutManager(linearLayoutManager);
         submissionJsonRequest(SharedPreferenceManager.getInstance(getApplicationContext()).getUser().getUserId());
+
+
     }
 
     public void submissionJsonRequest(int userId) {
 
-        // Create a JSONObject to hold the additional data
-        JSONObject requestData = new JSONObject();
-        try {
-            requestData.put("userID", userId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URLs.URL_READ_MINE_SUBMISSION, requestData, new Response.Listener<JSONObject>() {
+        jsonObjectRequest = new JsonObjectRequest(URLs.URL_READ_SUBMISSION, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
@@ -119,7 +98,7 @@ public class MySubmissionsActivity extends AppCompatActivity {
                     }
 
 
-                    propertySubmissionsListRVAdapter = new PropertySubmissionsListRVAdapter(propertySubmissionArrayList, getApplicationContext());
+                    propertySubmissionsListRVAdapter = new PropertySubmissionsListAdminRVAdapter(propertySubmissionArrayList, getApplicationContext());
                     submissionRV.setAdapter(propertySubmissionsListRVAdapter);
 
                 } catch (JSONException e) {
