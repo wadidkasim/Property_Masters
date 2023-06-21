@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 
 public class AdminViewPropertyActivity extends AppCompatActivity {
 
+    private ProgressBar progressBar;
     ChipGroup chipGroup;
     Chip chipHousing;
     Chip chipLand;
@@ -44,6 +47,7 @@ public class AdminViewPropertyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_view_property);
 
+        progressBar = findViewById(R.id.progressBar);
         chipGroup = findViewById(R.id.chipGroup);
         chipHousing = findViewById(R.id.chipHousing);
         chipLand = findViewById(R.id.chipLand);
@@ -105,6 +109,7 @@ public class AdminViewPropertyActivity extends AppCompatActivity {
 
     public void propertyJsonRequest(String propertyType) {
 
+        progressBar.setVisibility(View.VISIBLE);
 //        // Create a JSONObject to hold the additional data
 //        JSONObject requestData = new JSONObject();
 //        try {
@@ -138,15 +143,18 @@ public class AdminViewPropertyActivity extends AppCompatActivity {
                         propertyArrayList.add(property);
                         Log.e("Response", property.getName());
 
+
                     }
 
 
                     propertyListAdminRVAdapter = new PropertyListAdminRVAdapter(propertyArrayList, getApplicationContext());
                     propertyRV.setAdapter(propertyListAdminRVAdapter);
+                    progressBar.setVisibility(View.GONE);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("Response", e.toString());
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -155,6 +163,7 @@ public class AdminViewPropertyActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.e("error","" +error.getMessage());
+                progressBar.setVisibility(View.GONE);
             }
         });
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -39,12 +40,14 @@ public class MyInquiriesActivity extends AppCompatActivity {
     private RecyclerView inquiryRV;
     JsonObjectRequest jsonObjectRequest;
     RequestQueue requestQueue;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_inquiries);
 
+        progressBar = findViewById(R.id.progressBar);
         backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +66,7 @@ public class MyInquiriesActivity extends AppCompatActivity {
     }
 
     public void inquiryJsonRequest(int userId) {
-
+        progressBar.setVisibility(View.VISIBLE);
         // Create a JSONObject to hold the additional data
         JSONObject requestData = new JSONObject();
         try {
@@ -107,10 +110,12 @@ public class MyInquiriesActivity extends AppCompatActivity {
 
                     inquiryListRVAdapter = new InquiryListRVAdapter(inquiryArrayList, getApplicationContext());
                     inquiryRV.setAdapter(inquiryListRVAdapter);
+                    progressBar.setVisibility(View.GONE);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("Response", e.toString());
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -119,6 +124,7 @@ public class MyInquiriesActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.e("error","" +error.getMessage());
+                progressBar.setVisibility(View.GONE);
             }
         });
 

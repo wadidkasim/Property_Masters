@@ -12,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -42,12 +43,14 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
     Button submit;
     ImageButton backBtn;
     AutoCompleteTextView autoCompleteTextView;
+    private ProgressBar progressBar;
     private static final int PICK_IMAGE_REQUEST = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_submission);
 
+        progressBar = findViewById(R.id.progressBar);
         backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +103,7 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
     }
 
     private void createProperty() {
-
+        progressBar.setVisibility(View.VISIBLE);
         //getting the tag from the edittext
         final String nameString = nameTIL.getEditText().getText().toString();
         final String descriptionString = descriptionTIL.getEditText().getText().toString();
@@ -134,6 +137,7 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 }) {
 
@@ -204,14 +208,17 @@ public class AddEditSubmissionActivity extends AppCompatActivity {
                             if (!obj.getBoolean("error")) {
                                 Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                                 Log.i("success message", obj.getString("message"));
+                                progressBar.setVisibility(View.GONE);
                                 startActivity(new Intent(AddEditSubmissionActivity.this, MySubmissionsActivity.class));
                             } else {
                                 Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                                 Log.e("error message", obj.getString("message"));
+                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e("stack trace error message", e.getMessage());
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },

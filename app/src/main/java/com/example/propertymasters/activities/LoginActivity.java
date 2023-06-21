@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -31,12 +32,15 @@ public class LoginActivity extends AppCompatActivity {
     LinearLayout dontHaveAnAccount;
     Button loginBtn;
 
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        progressBar = findViewById(R.id.progressBar);
         emailTIL = findViewById(R.id.emailTIL);
         passwordTIL = findViewById(R.id.passwordTIL);
         loginBtn = findViewById(R.id.loginBtn);
@@ -66,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void userLogin() {
+        progressBar.setVisibility(View.VISIBLE);
         //first getting the values
         final String email = emailTIL.getEditText().getText().toString();
         final String password = passwordTIL.getEditText().getText().toString();
@@ -139,12 +144,15 @@ public class LoginActivity extends AppCompatActivity {
                                 } else{
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }
+                                progressBar.setVisibility(View.GONE);
                             } else {
                                 Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_SHORT).show();
                                 Log.e("error message", obj.getString("msg"));
+                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },
@@ -153,6 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // Handle any errors that occur during the request
                         Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
 
                 }) {

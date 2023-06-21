@@ -12,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AdminAddPropertyActivity extends AppCompatActivity {
-
+    private ProgressBar progressBar;
     TextInputLayout nameTIL, descriptionTIL, priceTIL, locationTIL, isApproved;
     ImageView imageView;
     Button submit;
@@ -46,6 +47,7 @@ public class AdminAddPropertyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_property);
 
+        progressBar = findViewById(R.id.progressBar);
         backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +102,7 @@ public class AdminAddPropertyActivity extends AppCompatActivity {
     }
 
     private void createProperty() {
-
+        progressBar.setVisibility(View.VISIBLE);
         //getting the tag from the edittext
         final String nameString = nameTIL.getEditText().getText().toString();
         final String descriptionString = descriptionTIL.getEditText().getText().toString();
@@ -122,11 +124,13 @@ public class AdminAddPropertyActivity extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                             Log.e("Message---",obj.getString("message"));
+                            progressBar.setVisibility(View.GONE);
                             startActivity(new Intent(getApplicationContext(),AdminViewPropertyActivity.class));
 
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },
@@ -134,6 +138,7 @@ public class AdminAddPropertyActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 }) {
 

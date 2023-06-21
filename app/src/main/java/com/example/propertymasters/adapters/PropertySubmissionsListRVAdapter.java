@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.propertymasters.R;
 import com.example.propertymasters.activities.PropertyDetailsActivity;
+import com.example.propertymasters.activities.SubmissionDetailsActivity;
 import com.example.propertymasters.models.PropertySubmission;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class PropertySubmissionsListRVAdapter extends RecyclerView.Adapter<Prope
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PropertyDetailsActivity.class);
+                Intent intent = new Intent(context, SubmissionDetailsActivity.class);
 
                 intent.putExtra("id",""+propertySubmission.getPropertyID());
                 intent.putExtra("submissionId",""+propertySubmission.getSubmissionID());

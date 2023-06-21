@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -39,7 +40,7 @@ public class HomeFragment extends Fragment {
     ChipGroup chipGroup;
     Chip chipHousing;
     Chip chipLand;
-
+    private ProgressBar progressBar;
     private ArrayList<Property> propertyArrayList;
     private PropertyListRVAdapter propertyListRVAdapter;
     private RecyclerView propertyRV;
@@ -51,6 +52,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        progressBar = view.findViewById(R.id.progressBar);
         chipGroup = view.findViewById(R.id.chipGroup);
         chipHousing = view.findViewById(R.id.chipHousing);
         chipLand = view.findViewById(R.id.chipLand);
@@ -71,6 +73,7 @@ public class HomeFragment extends Fragment {
 
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
                     propertyRV.setLayoutManager(linearLayoutManager);
+                    progressBar.setVisibility(View.VISIBLE);
                     propertyJsonRequest("Land");
                     // Deselect the other chip
                     chipHousing.setChecked(false);
@@ -92,6 +95,7 @@ public class HomeFragment extends Fragment {
 
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
                     propertyRV.setLayoutManager(linearLayoutManager);
+                    progressBar.setVisibility(View.VISIBLE);
                     propertyJsonRequest("Housing");
                     // Deselect the other chip
                     chipLand.setChecked(false);
@@ -107,6 +111,7 @@ public class HomeFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
         propertyRV.setLayoutManager(linearLayoutManager);
+        progressBar.setVisibility(View.VISIBLE);
         propertyJsonRequest("Housing");
 
         return view;
@@ -114,6 +119,7 @@ public class HomeFragment extends Fragment {
 
 
     public void propertyJsonRequest(String propertyType) {
+
 
 //        // Create a JSONObject to hold the additional data
 //        JSONObject requestData = new JSONObject();
@@ -147,6 +153,7 @@ public class HomeFragment extends Fragment {
                         );
                         propertyArrayList.add(property);
                         Log.e("Response", property.getName());
+                        progressBar.setVisibility(View.GONE);
 
                     }
 
@@ -157,6 +164,7 @@ public class HomeFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("Response", e.toString());
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -165,6 +173,7 @@ public class HomeFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.e("error","" +error.getMessage());
+                progressBar.setVisibility(View.GONE);
             }
         });
 

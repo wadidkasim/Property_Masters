@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import org.json.JSONObject;
 
 public class PropertyDetailsAdminActivity extends AppCompatActivity {
 
+    private ProgressBar progressBar;
     ImageView propertyImage;
     ImageButton backBtn;
     Button deleteBtn, updateBtn;
@@ -37,6 +39,7 @@ public class PropertyDetailsAdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_details_admin);
 
+        progressBar = findViewById(R.id.progressBar);
         propertyImage = findViewById(R.id.propertyImg);
         name = findViewById(R.id.name);
         price = findViewById(R.id.price);
@@ -91,6 +94,7 @@ public class PropertyDetailsAdminActivity extends AppCompatActivity {
 
     private void deleteProperty() {
 
+        progressBar.setVisibility(View.VISIBLE);
         //if everything is fine
 
         JSONObject jsonBody = new JSONObject();
@@ -115,13 +119,16 @@ public class PropertyDetailsAdminActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
 
                                 startActivity(new Intent(PropertyDetailsAdminActivity.this, AdminViewPropertyActivity.class));
+                                progressBar.setVisibility(View.GONE);
                             } else {
                                 Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                                 Log.e("error message", obj.getString("message"));
+                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e("error message", e.getMessage());
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },

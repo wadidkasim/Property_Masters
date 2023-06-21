@@ -12,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -35,6 +36,7 @@ import java.util.Map;
 
 public class UpdatePropertyAdminActivity extends AppCompatActivity {
 
+    private ProgressBar progressBar;
     TextInputLayout nameTIL, descriptionTIL, priceTIL, locationTIL, isApproved;
     ImageView imageView;
     Button submit;
@@ -46,6 +48,7 @@ public class UpdatePropertyAdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_property_admin);
 
+        progressBar = findViewById(R.id.progressBar);
         backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +119,7 @@ public class UpdatePropertyAdminActivity extends AppCompatActivity {
 
     private void updateProperty() {
 
+        progressBar.setVisibility(View.VISIBLE);
         //getting the tag from the edittext
         final int propertyID = Integer.parseInt(getIntent().getStringExtra("id"));
         final String nameString = nameTIL.getEditText().getText().toString();
@@ -139,7 +143,7 @@ public class UpdatePropertyAdminActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                             Log.e("Message---",obj.getString("message"));
                             startActivity(new Intent(getApplicationContext(),AdminViewPropertyActivity.class));
-
+                            progressBar.setVisibility(View.GONE);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -150,6 +154,7 @@ public class UpdatePropertyAdminActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 }) {
 

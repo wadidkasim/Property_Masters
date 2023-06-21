@@ -10,6 +10,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    private ProgressBar progressBar;
     TextInputLayout nameTIL, emailTIL,phoneTIL, passwordTIL, confirmPasswordTIL;
     LinearLayout alreadyHaveAnAccount;
     Button signUpBtn;
@@ -37,6 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        progressBar = findViewById(R.id.progressBar);
         nameTIL = findViewById(R.id.nameTIL);
         emailTIL = findViewById(R.id.emailTIL);
         phoneTIL = findViewById(R.id.phoneTIL);
@@ -67,6 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void userSignUp() {
+        progressBar.setVisibility(View.VISIBLE);
         //first getting the values
         String nameString = nameTIL.getEditText().getText().toString();
         String emailString = emailTIL.getEditText().getText().toString();
@@ -168,12 +172,15 @@ public class SignUpActivity extends AppCompatActivity {
                                 //starting the profile activity
                                 finish();
                                 startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                                progressBar.setVisibility(View.GONE);
                             } else {
                                 Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_SHORT).show();
                                 Log.e("error message", obj.getString("msg"));
+                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 },
@@ -183,6 +190,7 @@ public class SignUpActivity extends AppCompatActivity {
                         // Handle any errors that occur during the request
                         Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
                         Log.i("JSON BODY", jsonBody.toString());
+                        progressBar.setVisibility(View.GONE);
                     }
 
                 }) {

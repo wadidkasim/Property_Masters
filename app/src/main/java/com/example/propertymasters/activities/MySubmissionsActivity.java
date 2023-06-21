@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,6 +37,7 @@ public class MySubmissionsActivity extends AppCompatActivity {
 
     ExtendedFloatingActionButton addSubmissionBtn;
 
+    private ProgressBar progressBar;
     ImageButton backBtn;
     private ArrayList<PropertySubmission> propertySubmissionArrayList;
     private PropertySubmissionsListRVAdapter propertySubmissionsListRVAdapter;
@@ -47,6 +49,7 @@ public class MySubmissionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_submissions);
 
+        progressBar = findViewById(R.id.progressBar);
         backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +80,7 @@ public class MySubmissionsActivity extends AppCompatActivity {
 
     public void submissionJsonRequest(int userId) {
 
+        progressBar.setVisibility(View.VISIBLE);
         // Create a JSONObject to hold the additional data
         JSONObject requestData = new JSONObject();
         try {
@@ -121,10 +125,12 @@ public class MySubmissionsActivity extends AppCompatActivity {
 
                     propertySubmissionsListRVAdapter = new PropertySubmissionsListRVAdapter(propertySubmissionArrayList, getApplicationContext());
                     submissionRV.setAdapter(propertySubmissionsListRVAdapter);
+                    progressBar.setVisibility(View.GONE);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("Response", e.toString());
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -134,6 +140,7 @@ public class MySubmissionsActivity extends AppCompatActivity {
                 error.printStackTrace();
                 Log.e("error","" +error.getMessage());
                 Log.e("error","" +error);
+                progressBar.setVisibility(View.GONE);
             }
         });
 
